@@ -1,0 +1,61 @@
+name: Node.js CI/CD Pipeline
+
+# Define quais eventos disparam o pipeline
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # Etapa de Integração Contínua (CI)
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar o código do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar o Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Executar lint (ESLint)
+        run: npm run lint
+
+      - name: Executar testes automatizados
+        run: npm test
+
+  # Etapa de Entrega Contínua (CD) — só roda se o CI passar
+  deploy-simulation:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Baixar o código do repositório
+        uses: actions/checkout@v4
+
+      - name: Simular Deploy / Empacotar Artefato
+        run: |
+          echo "Preparando arquivos para produção..."
+          mkdir build
+          cp -r src package.json package-lock.json build/
+          echo "Deploy simulado com sucesso!"
+
+  deploy-to-render:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Disparar deploy no Render via Webhook
+        run: |
+          echo "Iniciando o deploy no Render..."
+          curl -f -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+          echo "Deploy solicitado com sucesso!"

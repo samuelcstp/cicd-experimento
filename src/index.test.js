@@ -20,3 +20,9 @@ test('GET /palindromo/cursor rejeita não-palíndromo', async () => {
   expect(res.body.palindromo).toBe(false);
   expect(res.body.dica).toBe('Não é palíndromo.');
 });
+
+test('SIMULAÇÃO: radar deveria ser palíndromo (forçando erro)', async () => {
+  const res = await request(app).get('/palindromo/radar');
+  expect(res.statusCode).toBe(200);
+  expect(res.body.palindromo).toBe(false);
+});

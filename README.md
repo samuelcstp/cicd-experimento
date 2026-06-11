@@ -39,7 +39,7 @@ Dispara em **push** e **pull request** para `main`:
 4. `npm run lint` — verifica estilo/erros com ESLint
 5. `npm test` — roda os testes
 
-### CD — `deploy-simulation` + `deploy-to-render`
+### CD — Após o CI passar, dois jobs de CD são executados em paralelo: `deploy-simulation` e `deploy-to-render`
 
 Disparam **somente** em push na `main`, **depois** do CI passar (os dois jobs rodam em paralelo):
 

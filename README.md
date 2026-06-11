@@ -60,10 +60,6 @@ Na aba **Actions** do GitHub você verá os 3 jobs: `build-and-test` → `deploy
 5. No GitHub: **Settings → Secrets → Actions** → crie `RENDER_DEPLOY_HOOK` com essa URL
 6. (Recomendado) Desative **Auto-Deploy** no Render para o deploy só acontecer via pipeline
 
-## ESLint
-
-O arquivo `eslint.config.mjs` configura o **ESLint** no formato novo (flat config). Ele analisa o código em busca de problemas comuns — variáveis não usadas, erros de sintaxe, más práticas — antes dos testes rodarem no CI.
-
 ## Tecnologias
 
 - Node.js + Express
